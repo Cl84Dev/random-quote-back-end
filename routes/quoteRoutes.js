@@ -34,6 +34,18 @@ router.get("/", async (req, res) => {
   }
 });
 
+router.get("/quotation/:quotation", async (req, res) => {
+  try {
+    const searchTerm = req.params.quotation;
+    const filter = { quotation: new RegExp(searchTerm, "i") };
+    const quotes = await Quote.find(filter);
+
+    res.status(200).json(quotes);
+  } catch (error) {
+    res.status(500).json({ error: error });
+  }
+});
+
 router.get("/:id", async (req, res) => {
   const id = req.params.id;
 
