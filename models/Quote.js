@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const Quote = mongoose.model("Quote", {
-  quotation: String,
+  quote: String,
   author: String,
 });
 

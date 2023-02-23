@@ -4,20 +4,20 @@ import Quote from "../models/Quote.js";
 const router = Router();
 
 router.post("/", async (req, res) => {
-  const { quotation, author } = req.body;
+  const { quote, author } = req.body;
 
-  if (!quotation || !author) {
+  if (!quote || !author) {
     res.status(422).json({ error: "Quotation and author are mandatory!" });
     return;
   }
 
-  const quote = {
-    quotation,
+  const newQuote = {
+    quote,
     author,
   };
 
   try {
-    await Quote.create(quote);
+    await Quote.create(newQuote);
     res.status(201).json({ message: "Quote added successfully!" });
   } catch (error) {
     res.status(500).json({ error: error });
@@ -34,10 +34,10 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.get("/quotation/:quotation", async (req, res) => {
+router.get("/quote/:quote", async (req, res) => {
   try {
-    const searchTerm = req.params.quotation;
-    const filter = { quotation: new RegExp(searchTerm, "i") };
+    const searchTerm = req.params.quote;
+    const filter = { quote: new RegExp(searchTerm, "i") };
     const quotes = await Quote.find(filter);
 
     res.status(200).json(quotes);
@@ -77,21 +77,21 @@ router.get("/:id", async (req, res) => {
 
 router.patch("/:id", async (req, res) => {
   const id = req.params.id;
-  const { quotation, author } = req.body;
-  const quote = {
-    quotation,
+  const { quote, author } = req.body;
+  const updateQuote = {
+    quote,
     author,
   };
 
   try {
-    const updatedQuote = await Quote.updateOne({ _id: id }, quote);
+    const updatedQuote = await Quote.updateOne({ _id: id }, updateQuote);
 
     if (updatedQuote.matchedCount === 0) {
       res.status(422).json({ error: "Quote not found!" });
       return;
     }
 
-    res.status(200).json(quote);
+    res.status(200).json(updateQuote);
   } catch (error) {
     res.status(500).json({ error: error });
   }
