@@ -18,7 +18,7 @@ router.post("/", async (req, res) => {
 
   try {
     await Quote.create(newQuote);
-    res.status(201).json({ message: "Quote added successfully!" });
+    res.status(201).json({ ...newQuote, message: "Quote added successfully!" });
   } catch (error) {
     res.status(500).json({ error: error });
   }
@@ -91,7 +91,9 @@ router.patch("/:id", async (req, res) => {
       return;
     }
 
-    res.status(200).json(updateQuote);
+    res
+      .status(200)
+      .json({ ...updateQuote, message: "Quote updated succesfully!" });
   } catch (error) {
     res.status(500).json({ error: error });
   }
